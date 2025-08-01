@@ -1,42 +1,82 @@
-# Maze-3D
+# Multi-threaded Programming in Java
 
-Maze-3D is a first-person 3D maze exploration game developed in Unity as the final project for COP 4331 (Object-Oriented Programming). Players must navigate through a maze using keyboard and mouse controls to find the exit.
+This repository contains the source code for a multi-threaded Java application that simulates an automated package routing system in a logistics facility. It was developed for **CNT 4714 - Enterprise Computing** to demonstrate advanced Java concurrency concepts.
 
-## 🎮 Gameplay
+## 🧭 Overview
 
-- **Movement:** Use `W`, `A`, `S`, `D` to move forward, left, backward, and right.
-- **Camera Control:** Use the mouse to look around and navigate the maze in first-person view.
-- **Goal:** Find the exit of the maze.
+The program models a package routing system consisting of multiple **routing stations** connected via shared **conveyor segments**. Each station attempts to route packages concurrently, requiring synchronized access to avoid conflicts and deadlocks.
 
-## 📹 Demo
+## 🚀 Features
 
-Watch a gameplay video here:  
-👉 [YouTube Demo](https://www.youtube.com/watch?v=Uzr4J5QHQP0)
+- **Multi-threaded Design:**  
+  Leverages the `java.util.concurrent` package to manage parallel operations between routing stations.
 
-## 🛠 Technologies Used
+- **Deadlock Prevention:**  
+  Implements a locking protocol using `ReentrantLock` to safely acquire conveyor segments and avoid circular waits.
 
-- Unity 3D
-- C#
-- ShaderLab / HLSL (for visual effects)
+- **Thread Pool Execution:**  
+  Uses `ExecutorService` with a fixed thread pool to manage up to 10 routing station threads.
 
-## 📁 Folder Structure
+- **Configurable Input:**  
+  Reads from `config.txt` to determine the number of stations and their routing behaviors.
+
+- **Simulation Logging:**  
+  Outputs real-time logs of routing activity to track station behavior and system throughput.
+
+## ⚙️ Technologies Used
+
+- Java 8 or higher  
+- ReentrantLock  
+- ExecutorService  
+- File I/O for configuration parsing  
+
+## 📂 Project Structure
 
 ```
-Maze-3D/
-├── Assets/             # Game scenes, scripts, models, textures
-├── Library/            # Unity internal files
-├── Logs/               # Build logs
-├── Packages/           # Unity package manager configs
-├── ProjectSettings/    # Unity project settings
-├── UserSettings/       # Local user settings
-├── how to play.txt     # Basic instructions
-└── README.md           # Project documentation
+Multi-threaded-Programming-in-Java/
+├── Main.java               # Entry point; initializes simulation
+├── RoutingStation.java     # Implements Runnable; represents a station
+├── config.txt              # Input file with routing instructions
+├── README.md               # This file
 ```
 
-## 👨‍💻 Team
+## 📄 How It Works
 
-This project was created by **Team 10** for the **COP 4331** course at the **University of Central Florida**.
+Each routing station:
+1. Waits to acquire locks on its two adjacent conveyor segments.
+2. Routes a package from one segment to another.
+3. Releases the locks to allow others to proceed.
+4. Repeats this for a predefined number of routing tasks.
 
-## 📜 License
+This simulates real-world package routing behavior, with proper concurrency management to maximize system efficiency.
 
-This project is intended for educational use only.
+## ✅ Requirements
+
+- JDK 8 or higher
+- A `config.txt` file formatted as required by the simulation
+
+## 📝 Example `config.txt`
+
+```
+4
+1 2 4
+2 3 3
+3 4 5
+4 1 2
+```
+
+- First line: number of routing stations  
+- Subsequent lines: station ID, conveyor segments, and number of packages to route
+
+## 📦 Compilation & Execution
+
+```bash
+javac Main.java RoutingStation.java
+java Main
+```
+
+## 📚 About
+
+This project was developed as part of **Project One: Multi-threaded Programming in Java** for the **Summer 2024** session of **CNT 4714 - Enterprise Computing**.
+
+---
