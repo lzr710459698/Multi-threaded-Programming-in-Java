@@ -1,23 +1,82 @@
-Multi-threaded Programming in Java
+# Multi-threaded Programming in Java
 
-This repository contains the code for a multi-threaded Java application that simulates an automated package routing system for a logistics operation. The project demonstrates the use of concurrency in Java to manage shared resources efficiently.
+This repository contains the source code for a multi-threaded Java application that simulates an automated package routing system in a logistics facility. It was developed for **CNT 4714 - Enterprise Computing** to demonstrate advanced Java concurrency concepts.
 
-Overview
+## 🧭 Overview
 
-This project simulates a package routing system where multiple routing stations operate concurrently to move packages between conveyors in a logistics facility. The simulation ensures proper synchronization between stations to prevent deadlocks while maximizing throughput.
+The program models a package routing system consisting of multiple **routing stations** connected via shared **conveyor segments**. Each station attempts to route packages concurrently, requiring synchronized access to avoid conflicts and deadlocks.
 
-Features
+## 🚀 Features
 
-Multi-threaded Design: Implements Java's java.util.concurrent package to manage concurrent operations across multiple routing stations.
+- **Multi-threaded Design:**  
+  Leverages the `java.util.concurrent` package to manage parallel operations between routing stations.
 
-Concurrency Control: Uses ReentrantLock to synchronize access to shared conveyor lines, ensuring no two adjacent stations work simultaneously, preventing deadlock scenarios.
+- **Deadlock Prevention:**  
+  Implements a locking protocol using `ReentrantLock` to safely acquire conveyor segments and avoid circular waits.
 
-Thread Pool Management: Utilizes ExecutorService with a fixed thread pool to efficiently manage up to 10 routing stations.
-	
-Configurable Simulation: Reads from a config.txt file to set the number of routing stations and their respective workloads dynamically.
+- **Thread Pool Execution:**  
+  Uses `ExecutorService` with a fixed thread pool to manage up to 10 routing station threads.
 
-Real-time Simulation Output: Provides detailed output to track the state and actions of each routing station.
- 
-Requirements
+- **Configurable Input:**  
+  Reads from `config.txt` to determine the number of stations and their routing behaviors.
 
-Java 8 or higher
+- **Simulation Logging:**  
+  Outputs real-time logs of routing activity to track station behavior and system throughput.
+
+## ⚙️ Technologies Used
+
+- Java 8 or higher  
+- ReentrantLock  
+- ExecutorService  
+- File I/O for configuration parsing  
+
+## 📂 Project Structure
+
+```
+Multi-threaded-Programming-in-Java/
+├── Main.java               # Entry point; initializes simulation
+├── RoutingStation.java     # Implements Runnable; represents a station
+├── config.txt              # Input file with routing instructions
+├── README.md               # This file
+```
+
+## 📄 How It Works
+
+Each routing station:
+1. Waits to acquire locks on its two adjacent conveyor segments.
+2. Routes a package from one segment to another.
+3. Releases the locks to allow others to proceed.
+4. Repeats this for a predefined number of routing tasks.
+
+This simulates real-world package routing behavior, with proper concurrency management to maximize system efficiency.
+
+## ✅ Requirements
+
+- JDK 8 or higher
+- A `config.txt` file formatted as required by the simulation
+
+## 📝 Example `config.txt`
+
+```
+4
+1 2 4
+2 3 3
+3 4 5
+4 1 2
+```
+
+- First line: number of routing stations  
+- Subsequent lines: station ID, conveyor segments, and number of packages to route
+
+## 📦 Compilation & Execution
+
+```bash
+javac Main.java RoutingStation.java
+java Main
+```
+
+## 📚 About
+
+This project was developed as part of **Project One: Multi-threaded Programming in Java** for the **Summer 2024** session of **CNT 4714 - Enterprise Computing**.
+
+---
